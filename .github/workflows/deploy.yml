@@ -1,0 +1,70 @@
+name: NexusCommerce Production Pipeline CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - production
+
+jobs:
+  build-and-test:
+    name: Build & Test Sanity Pass
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tested repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm ci
+
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm ci
+
+      - name: Compile frontend bundle validation
+        run: |
+          cd client
+          npm run build
+
+  deploy:
+    name: Secure Remote Continuous Deployment
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Execute remote VPS deployment commands via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_SSH_HOST }}
+          username: ${{ secrets.VPS_SSH_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          script: |
+            # Navigate to the target repository directory on your VPS
+            cd /var/www/nexuscommerce || cd ~/nexuscommerce
+
+            # Sync code modifications
+            git pull origin ${{ github.ref_name }}
+
+            # Rebuild and restart the container stack
+            docker-compose up --build -d
+
+            # Purge unused building caches and dangling docker images
+            docker image prune -f
+
+            # Output telemetry validating that all three containers are active
+            echo "══════════════════════════════════════════════════════════"
+            echo "   NEXUSCOMMERCE DOCKER CONTAINER TELEMETRY MATRIX"
+            echo "══════════════════════════════════════════════════════════"
+            docker ps --filter "name=nexus"
