@@ -93,33 +93,29 @@ export const AuthProvider = ({ children }) => {
             const savedUser = localStorage.getItem("authUser");
             
             if (savedToken && savedUser) {
-                setToken(savedToken);
-                setUser(JSON.parse(savedUser));
-                
                 try {
-                    // Sync settings and cart with database
-                    const settingsRes = await axios.get("/api/settings");
-                    if (settingsRes.data.success) {
+                    setToken(savedToken);
+                    setUser(JSON.parse(savedUser));
+                    
+                    // Sync settings and cart with database safely
+                    const settingsRes = await axios.get("/api/settings").catch(() => null);
+                    if (settingsRes && settingsRes.data && settingsRes.data.success) {
                         setSettings(settingsRes.data.data);
                     }
                     
-                    const cartRes = await axios.get("/api/cart");
-                    if (cartRes.data.success) {
+                    const cartRes = await axios.get("/api/cart").catch(() => null);
+                    if (cartRes && cartRes.data && cartRes.data.success) {
                         setCart(cartRes.data.data);
                     }
                 } catch (err) {
-                    console.error("[Session] Error syncing MERN database states: ", err.message);
-                    // If session expired or db unavailable, clear
-                    if (err.response && err.response.status === 401) {
-                        logout();
-                    }
+                    console.warn("[Session] Non-fatal session sync note: ", err.message);
                 }
             }
             setLoading(false);
         };
         
         initializeSession();
-    }, [token]);
+    }, []);
 
     // Onboarding handlers
     const signup = async (email, password) => {
