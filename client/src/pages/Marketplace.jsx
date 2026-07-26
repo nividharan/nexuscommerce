@@ -3,9 +3,125 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axiosInstance";
 import { AuthContext } from "../context/AuthContext";
 
+const CLIENT_FALLBACK_PRODUCTS = [
+    {
+        id: "backpack",
+        cost: 1800,
+        category: "Apparel > Backpacks & Bags",
+        title: "Aegis Minimalist Waterproof Travel Backpack",
+        shortDesc: "The ultimate streamlined companion for urban commuters and daily travelers. Engineered from high-density, water-resistant ballistic nylon to protect all your devices.",
+        specs: [
+            { label: "Material", value: "1680D Waterproof Ballistic Nylon" },
+            { label: "Compartment", value: "Padded sleeve fits up to 15.6\" Laptop" }
+        ],
+        tags: ["laptop backpack", "waterproof backpack", "travel bag"],
+        sku: "AEGIS-BKPK-GRY",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "chair",
+        cost: 3600,
+        category: "Furniture > Office Chairs",
+        title: "Vortex Mesh Ergonomic Office Chair",
+        shortDesc: "Experience elite ergonomic support during long work hours. Featuring adaptive lumbar alignment and dynamic airflow mesh engineered for prolonged daily productivity.",
+        specs: [
+            { label: "Backrest", value: "High-elasticity breathable cooling mesh" }
+        ],
+        tags: ["ergonomic chair", "office chair", "mesh desk chair"],
+        sku: "VORTEX-CHAIR-BLK",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
+    },
+    {
+        id: "watch",
+        cost: 2900,
+        category: "Electronics > Wearable Technology",
+        title: "Aura Pro Smart Health & Active Watch",
+        shortDesc: "A premium wearable device tracking real-time heart rate, sleep quality, and performance telemetry. Features high-res AMOLED display and premium widgets.",
+        specs: [
+            { label: "Display", value: "1.43\" AMOLED Always-On Screen" }
+        ],
+        tags: ["smart watch", "fitness tracker"],
+        sku: "AURA-WATCH-PRO",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "desk",
+        cost: 12000,
+        category: "Furniture > Office Desks",
+        title: "Ascend Dual-Motor Standing Desk Workspace",
+        shortDesc: "Upgrade your productivity with a high-performance standing desk. Equipped with dual quiet motors, smart touch memory settings, and solid oak finish.",
+        specs: [
+            { label: "Desktop Size", value: "55\" x 28\" Solid Oak Tabletop" }
+        ],
+        tags: ["standing desk", "height adjustable"],
+        sku: "ASCEND-DESK-OAK",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
+    },
+    {
+        id: "headphones",
+        cost: 4500,
+        category: "Electronics > Audio",
+        title: "Hyperion ANC Wireless Studio Headphones",
+        shortDesc: "Immerse yourself in high-fidelity sound. Features active noise cancellation to block ambient noise, crystal-clear mic clarity, and ultra-soft memory ear cushions.",
+        specs: [
+            { label: "Drivers", value: "40mm Custom Neodymium Audio Drivers" }
+        ],
+        tags: ["headphones", "wireless audio", "noise cancelling"],
+        sku: "HYPERION-ANC-BLK",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "ringlight",
+        cost: 2200,
+        category: "Electronics > Photography",
+        title: "Lumina Studio 18\" Bi-Color Ring Light & Stand",
+        shortDesc: "Professional lighting for live streaming, product photography, and video creation. Equipped with dimmable color temperature controls and sturdy phone mount.",
+        specs: [
+            { label: "Ring Diameter", value: "18-inch High-Lumen LED Panel" }
+        ],
+        tags: ["ring light", "studio lighting"],
+        sku: "LUMINA-RING-18",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
+    },
+    {
+        id: "waterbottle",
+        cost: 850,
+        category: "Home > Drinkware",
+        title: "ZenHydro 1L Vacuum Insulated Steel Flask",
+        shortDesc: "Keep your beverages icy cold or piping hot all day long. Built with double-wall food-grade 18/8 stainless steel and a sweat-proof matte finish.",
+        specs: [
+            { label: "Capacity", value: "1000ml / 32oz Volume" }
+        ],
+        tags: ["water bottle", "insulated flask"],
+        sku: "ZENHYDRO-1L-SLT",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "drone",
+        cost: 24500,
+        category: "Electronics > Drones",
+        title: "Titan X 4K HDR Camera Aerial Drone",
+        shortDesc: "Capture breathtaking aerial cinematography with 4K HDR video, 3-axis motorized gimbal stabilization, and smart GPS auto-return safety tracking.",
+        specs: [
+            { label: "Camera Sensor", value: "1/2.3\" CMOS 12MP 4K HDR" }
+        ],
+        tags: ["drone", "4k camera drone"],
+        sku: "TITANX-DRONE-4K",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
+    }
+];
+
 const Marketplace = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState(CLIENT_FALLBACK_PRODUCTS);
+    const [loading, setLoading] = useState(false);
     const [activeFilter, setActiveFilter] = useState("All");
     const [syncingId, setSyncingId] = useState("");
     
@@ -36,11 +152,11 @@ const Marketplace = () => {
         const fetchProducts = async () => {
             try {
                 const res = await axios.get("/api/products");
-                if (res.data.success) {
+                if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
                     setProducts(res.data.data);
                 }
             } catch (err) {
-                console.error("[Marketplace] Error fetching catalog variants: ", err.message);
+                console.warn("[Marketplace] API fetch note, utilizing fallback catalog:", err.message);
             } finally {
                 setLoading(false);
             }
