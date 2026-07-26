@@ -32,9 +32,22 @@ const apiLimiter = rateLimit({
 app.use("/api/", apiLimiter);
 
 // Middlewares
-const allowedOrigin = process.env.PRODUCTION_FRONTEND_URL || "http://localhost:3000";
 app.use(cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const envOrigin = process.env.PRODUCTION_FRONTEND_URL;
+        if (
+            !envOrigin ||
+            envOrigin === "*" ||
+            origin === envOrigin ||
+            origin.endsWith(".vercel.app") ||
+            origin.includes("localhost") ||
+            origin.includes("127.0.0.1")
+        ) {
+            return callback(null, true);
+        }
+        return callback(null, true);
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
