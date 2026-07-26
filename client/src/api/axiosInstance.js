@@ -4,7 +4,7 @@ import axios from "axios";
 const isProduction = import.meta.env.PROD || window.location.hostname !== "localhost";
 
 const apiBaseUrl = isProduction 
-    ? (import.meta.env.VITE_API_URL || "https://nexuscommerce-backend.onrender.com") 
+    ? (import.meta.env.VITE_API_URL || "https://nexuscommerce-1.onrender.com") 
     : "http://localhost:5000";
 
 const axiosInstance = axios.create({

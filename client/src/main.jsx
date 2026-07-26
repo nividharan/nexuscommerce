@@ -11,7 +11,7 @@ const isProduction = typeof process !== "undefined" && process.env?.NODE_ENV ===
     || window.location.hostname !== "localhost";
 
 const apiBaseUrl = isProduction 
-    ? (import.meta.env.VITE_API_URL || "https://nexuscommerce-backend.onrender.com") 
+    ? (import.meta.env.VITE_API_URL || "https://nexuscommerce-1.onrender.com") 
     : "http://localhost:5000";
 
 axios.defaults.baseURL = apiBaseUrl;
