@@ -123,29 +123,39 @@ export const AuthProvider = ({ children }) => {
 
     // Onboarding handlers
     const signup = async (email, password) => {
-        const res = await axios.post("/api/auth/signup", { email, password });
-        if (res.data.success) {
-            const { token: authToken, user: authUser } = res.data;
-            localStorage.setItem("authToken", authToken);
-            localStorage.setItem("authUser", JSON.stringify(authUser));
-            setToken(authToken);
-            setUser(authUser);
-            return { success: true };
+        try {
+            const res = await axios.post("/api/auth/signup", { email, password });
+            if (res.data.success) {
+                const { token: authToken, user: authUser } = res.data;
+                localStorage.setItem("authToken", authToken);
+                localStorage.setItem("authUser", JSON.stringify(authUser));
+                setToken(authToken);
+                setUser(authUser);
+                return { success: true };
+            }
+            return { success: false, message: res.data.message || "Registration failed." };
+        } catch (err) {
+            const errMsg = err.response?.data?.message || err.message || "Unable to connect to registration server.";
+            return { success: false, message: errMsg };
         }
-        return { success: false, message: "Registration failed." };
     };
 
     const login = async (email, password) => {
-        const res = await axios.post("/api/auth/login", { email, password });
-        if (res.data.success) {
-            const { token: authToken, user: authUser } = res.data;
-            localStorage.setItem("authToken", authToken);
-            localStorage.setItem("authUser", JSON.stringify(authUser));
-            setToken(authToken);
-            setUser(authUser);
-            return { success: true };
+        try {
+            const res = await axios.post("/api/auth/login", { email, password });
+            if (res.data.success) {
+                const { token: authToken, user: authUser } = res.data;
+                localStorage.setItem("authToken", authToken);
+                localStorage.setItem("authUser", JSON.stringify(authUser));
+                setToken(authToken);
+                setUser(authUser);
+                return { success: true };
+            }
+            return { success: false, message: res.data.message || "Authentication failed." };
+        } catch (err) {
+            const errMsg = err.response?.data?.message || err.message || "Unable to connect to authentication server.";
+            return { success: false, message: errMsg };
         }
-        return { success: false, message: "Authentication failed." };
     };
 
     const logout = () => {
