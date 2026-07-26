@@ -47,7 +47,7 @@ app.use(express.json());
 // Import Controllers
 const { signup, login, protect } = require("./controllers/authController");
 const { getProducts, getProductById } = require("./controllers/productController");
-const { getCart, addToCart, removeFromCart, getSettings, updateSettings } = require("./controllers/cartController");
+const { getCart, addToCart, removeFromCart, getSettings, updateSettings, exportToShopify } = require("./controllers/cartController");
 const { createCheckoutSession, handleWebhook, getBillingStatus } = require("./controllers/billingController");
 
 // -------------------------------------------------------------
@@ -157,6 +157,7 @@ app.get("/api/products/:id", getProductById);
 app.get("/api/cart", protect, getCart);
 app.post("/api/cart", protect, addToCart);
 app.delete("/api/cart/:id", protect, removeFromCart);
+app.post("/api/cart/export-shopify", protect, exportToShopify);
 
 // Settings Configuration Routes (Protected)
 app.get("/api/settings", protect, getSettings);

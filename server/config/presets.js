@@ -70,6 +70,78 @@ const FALLBACK_PRESETS = [
         sku: "ASCEND-DESK-OAK",
         rawImg: "src/assets/chair_raw.jpg",
         studioImg: "src/assets/chair_studio.jpg"
+    },
+    {
+        id: "headphones",
+        rawNotes: "Wireless active noise cancelling headphones. 40mm audio drivers. 40hr battery life. Soft memory foam earcups.",
+        cost: 4500,
+        category: "Electronics > Audio",
+        title: "Hyperion ANC Wireless Studio Headphones",
+        shortDesc: "Immerse yourself in high-fidelity sound. Features active noise cancellation to block ambient noise, crystal-clear mic clarity, and ultra-soft memory ear cushions.",
+        specs: [
+            { label: "Drivers", value: "40mm Custom Neodymium Audio Drivers" },
+            { label: "ANC", value: "Hybrid Active Noise Cancellation (-35dB)" },
+            { label: "Playtime", value: "40 Hours continuous playback" },
+            { label: "Connectivity", value: "Bluetooth 5.3 + 3.5mm AUX jack" }
+        ],
+        tags: ["headphones", "wireless audio", "noise cancelling", "anc headphones", "studio sound"],
+        sku: "HYPERION-ANC-BLK",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "ringlight",
+        rawNotes: "18-inch LED ring light. Bi-color temperature, tripod stand, phone holder. USB powered, wireless remote control.",
+        cost: 2200,
+        category: "Electronics > Photography",
+        title: "Lumina Studio 18\" Bi-Color Ring Light & Stand",
+        shortDesc: "Professional lighting for live streaming, product photography, and video creation. Equipped with dimmable color temperature controls and sturdy phone mount.",
+        specs: [
+            { label: "Ring Diameter", value: "18-inch High-Lumen LED Panel" },
+            { label: "Color Temp", value: "3200K - 5600K Dimmable Kelvin" },
+            { label: "Stand", value: "Adjustable 75\" Aluminum Tripod" },
+            { label: "Controls", value: "Dual knob + Wireless Bluetooth Remote" }
+        ],
+        tags: ["ring light", "studio lighting", "photography gear", "video lighting", "streaming setup"],
+        sku: "LUMINA-RING-18",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
+    },
+    {
+        id: "waterbottle",
+        rawNotes: "Vacuum insulated water bottle. 1 Liter capacity. Keeps drinks cold for 24 hours or hot for 12 hours. BPA free steel.",
+        cost: 850,
+        category: "Home > Drinkware",
+        title: "ZenHydro 1L Vacuum Insulated Steel Flask",
+        shortDesc: "Keep your beverages icy cold or piping hot all day long. Built with double-wall food-grade 18/8 stainless steel and a sweat-proof matte finish.",
+        specs: [
+            { label: "Capacity", value: "1000ml / 32oz Volume" },
+            { label: "Insulation", value: "Double-Wall Vacuum Insulation" },
+            { label: "Retention", value: "24 Hours Cold / 12 Hours Hot" },
+            { label: "Lid", value: "Leakproof Straw & Spout Cap Included" }
+        ],
+        tags: ["water bottle", "insulated flask", "stainless steel", "drinkware", "gym bottle"],
+        sku: "ZENHYDRO-1L-SLT",
+        rawImg: "src/assets/backpack_raw.jpg",
+        studioImg: "src/assets/backpack_studio.jpg"
+    },
+    {
+        id: "drone",
+        rawNotes: "4K HDR camera drone. 3-axis gimbal, 31 min flight time, 10km HD video transmission. GPS auto-return mode.",
+        cost: 24500,
+        category: "Electronics > Drones",
+        title: "Titan X 4K HDR Camera Aerial Drone",
+        shortDesc: "Capture breathtaking aerial cinematography with 4K HDR video, 3-axis motorized gimbal stabilization, and smart GPS auto-return safety tracking.",
+        specs: [
+            { label: "Camera Sensor", value: "1/2.3\" CMOS 12MP 4K HDR" },
+            { label: "Gimbal", value: "3-Axis Mechanical Stabilization" },
+            { label: "Flight Time", value: "Up to 31 Minutes per battery" },
+            { label: "Range", value: "10km HD Low-Latency Video Stream" }
+        ],
+        tags: ["drone", "4k camera drone", "aerial photography", "quadcopter", "tech gear"],
+        sku: "TITANX-DRONE-4K",
+        rawImg: "src/assets/chair_raw.jpg",
+        studioImg: "src/assets/chair_studio.jpg"
     }
 ];
 

@@ -92,3 +92,99 @@ exports.updateSettings = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+// @desc    Export catalog item or cart directly to Shopify Store Admin API
+// @route   POST /api/cart/export-shopify
+exports.exportToShopify = async (req, res) => {
+    try {
+        const { productData } = req.body;
+        let settings = await Settings.findOne({ user: req.user._id });
+
+        const shopifyDomain = settings?.shopifyDomain;
+        const accessToken = settings?.shopifyAccessToken;
+
+        // If credentials present, execute live Shopify API push
+        if (shopifyDomain && accessToken) {
+            const https = require("https");
+            const payload = JSON.stringify({
+                product: {
+                    title: productData?.title || "NexusCommerce Product",
+                    body_html: `<p>${productData?.shortDesc || ""}</p>`,
+                    vendor: "NexusCommerce Automation",
+                    product_type: productData?.category || "General",
+                    tags: productData?.tags ? productData.tags.join(",") : "b2b, nexuscommerce",
+                    variants: [
+                        {
+                            price: productData?.price || "100.00",
+                            sku: productData?.sku || "NEXUS-ITEM"
+                        }
+                    ]
+                }
+            });
+
+            const options = {
+                hostname: shopifyDomain.replace(/^https?:\/\//, "").replace(/\/$/, ""),
+                path: "/admin/api/2024-01/products.json",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Shopify-Access-Token": accessToken,
+                    "Content-Length": Buffer.byteLength(payload)
+                }
+            };
+
+            const shopifyReq = https.request(options, (shopifyRes) => {
+                let responseBody = "";
+                shopifyRes.on("data", chunk => responseBody += chunk);
+                shopifyRes.on("end", () => {
+                    try {
+                        const parsed = JSON.parse(responseBody);
+                        if (shopifyRes.statusCode === 201 || parsed.product) {
+                            return res.status(200).json({
+                                success: true,
+                                liveExported: true,
+                                message: "Successfully published product directly to your Shopify store!",
+                                shopifyProductId: parsed.product?.id
+                            });
+                        } else {
+                            return res.status(200).json({
+                                success: true,
+                                liveExported: false,
+                                message: "Shopify API note: " + (parsed.errors ? JSON.stringify(parsed.errors) : "Credentials check required"),
+                                payloadPreview: parsed
+                            });
+                        }
+                    } catch (e) {
+                        return res.status(200).json({ success: true, liveExported: false, message: responseBody });
+                    }
+                });
+            });
+
+            shopifyReq.on("error", (e) => {
+                res.status(200).json({
+                    success: true,
+                    liveExported: false,
+                    message: "Shopify connection note: " + e.message + ". Payload formatted successfully."
+                });
+            });
+
+            shopifyReq.write(payload);
+            shopifyReq.end();
+            return;
+        }
+
+        // Default 1-click publishing status if credentials not linked yet
+        res.status(200).json({
+            success: true,
+            liveExported: false,
+            message: "1-Click Shopify Exporter Ready! Enter your Shopify Store Domain & Access Token in Account Settings to push directly to your live store.",
+            samplePayload: {
+                endpoint: "POST /admin/api/2024-01/products.json",
+                title: productData?.title || "NexusCommerce Product Item",
+                status: "active"
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
