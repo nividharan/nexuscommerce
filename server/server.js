@@ -35,21 +35,11 @@ app.use("/api/", apiLimiter);
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin) return callback(null, true);
-        const envOrigin = process.env.PRODUCTION_FRONTEND_URL;
-        if (
-            !envOrigin ||
-            envOrigin === "*" ||
-            origin === envOrigin ||
-            origin.endsWith(".vercel.app") ||
-            origin.includes("localhost") ||
-            origin.includes("127.0.0.1")
-        ) {
-            return callback(null, true);
-        }
-        return callback(null, true);
+        // Dynamically echo back requesting origin to satisfy W3C credentialed CORS policy
+        return callback(null, origin);
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
     credentials: true
 }));
 app.use(express.json());
