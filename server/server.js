@@ -162,12 +162,26 @@ app.post("/api/settings", protect, updateSettings);
 app.use("/src/assets", express.static(path.join(__dirname, "../client/src/assets")));
 app.use("/assets", express.static(path.join(__dirname, "../client/src/assets")));
 
-// Serve client production build statically
-app.use(express.static(path.join(__dirname, "../client/dist")));
+const fs = require("fs");
 
-// Fallback all non-API routing to index.html for React Router
+// Serve client production build statically if built locally
+const clientDistPath = path.join(__dirname, "../client/dist");
+if (fs.existsSync(clientDistPath)) {
+    app.use(express.static(clientDistPath));
+}
+
+// Fallback all non-API routing to index.html or API health check status
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
+    const indexPath = path.resolve(__dirname, "../client/dist", "index.html");
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(200).json({ 
+            success: true, 
+            message: "NexusCommerce B2B API Server Active", 
+            status: "online" 
+        });
+    }
 });
 
 const PORT = process.env.PORT || 5000;
