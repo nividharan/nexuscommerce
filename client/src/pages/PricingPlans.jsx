@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axiosInstance";
 
 const PricingPlans = () => {
     const { settings, updateDbSettings, token } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const PricingPlans = () => {
             name: "Growth",
             priceMonthly: 2900,
             priceAnnual: 2320, // 20% off
+            planId: "starter",
             features: [
                 "25 Active Catalog Items",
                 "Priority AI Vision processing",
@@ -44,6 +46,7 @@ const PricingPlans = () => {
             name: "Scale",
             priceMonthly: 7900,
             priceAnnual: 6320, // 20% off
+            planId: "pro",
             features: [
                 "Unlimited Catalog Items",
                 "Dedicated GPU Vision segmentations",
@@ -58,23 +61,35 @@ const PricingPlans = () => {
         }
     ];
 
-    const handleSelectPlan = async (planName) => {
+    const handleSelectPlan = async (plan) => {
         if (!token) {
             alert("Please login as an operator to subscribe or change plans.");
             navigate("/login");
             return;
         }
 
-        setLoadingPlan(planName);
+        setLoadingPlan(plan.name);
         try {
-            const res = await updateDbSettings({ ...settings, activePlan: planName });
-            if (res && res.success) {
-                alert(`Successfully subscribed to the "${planName}" plan! Your database profile has been updated.`);
+            const res = await axios.post("/api/billing/create-checkout-session", { 
+                planId: plan.planId || "pro" 
+            });
+
+            if (res.data && res.data.success) {
+                if (res.data.checkoutUrl) {
+                    if (res.data.simulated) {
+                        alert(`🎉 Successfully upgraded to the "${plan.name}" SaaS Plan! Your operator profile is now active.`);
+                        window.location.href = res.data.checkoutUrl;
+                    } else {
+                        // Redirect to official Stripe Checkout portal
+                        window.location.href = res.data.checkoutUrl;
+                    }
+                }
             } else {
-                alert("Failed to update subscription. Please try again.");
+                alert("Failed to initialize checkout session. Please try again.");
             }
         } catch (err) {
-            console.error(err);
+            console.error("[Billing Checkout Error]:", err);
+            alert("Checkout initialization error: " + (err.response?.data?.message || err.message));
         } finally {
             setLoadingPlan("");
         }
@@ -173,7 +188,7 @@ const PricingPlans = () => {
                                 </button>
                             ) : (
                                 <button 
-                                    onClick={() => handleSelectPlan(p.name)} 
+                                    onClick={() => handleSelectPlan(p)} 
                                     className="btn-primary" 
                                     style={{ width: "100%", padding: "12px", background: p.action === "free" ? "rgba(255,255,255,0.05)" : "var(--grad-neon)", color: p.action === "free" ? "var(--text-primary)" : "#0b0f19" }}
                                     disabled={loadingPlan !== ""}

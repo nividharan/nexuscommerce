@@ -48,6 +48,7 @@ app.use(express.json());
 const { signup, login, protect } = require("./controllers/authController");
 const { getProducts, getProductById } = require("./controllers/productController");
 const { getCart, addToCart, removeFromCart, getSettings, updateSettings } = require("./controllers/cartController");
+const { createCheckoutSession, handleWebhook, getBillingStatus } = require("./controllers/billingController");
 
 // -------------------------------------------------------------
 // SEED INITIAL PRESETS IF DATABASE IS EMPTY
@@ -160,6 +161,11 @@ app.delete("/api/cart/:id", protect, removeFromCart);
 // Settings Configuration Routes (Protected)
 app.get("/api/settings", protect, getSettings);
 app.post("/api/settings", protect, updateSettings);
+
+// Billing & Subscription Routes (Protected)
+app.post("/api/billing/create-checkout-session", protect, createCheckoutSession);
+app.get("/api/billing/status", protect, getBillingStatus);
+app.post("/api/billing/webhook", handleWebhook);
 
 // Serve product image assets statically for visual catalog assets
 app.use("/src/assets", express.static(path.join(__dirname, "../client/src/assets")));
