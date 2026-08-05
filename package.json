@@ -11,6 +11,7 @@
     "dev-server": "npm start --prefix server",
     "dev-client": "npm run dev --prefix client",
     "dev-angular": "npm start --prefix angular-client",
+    "dev-springboot": "mvn spring-boot:run --prefix springboot-server",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "heroku-postbuild": "npm run install-all && npm run build-client"
   },
