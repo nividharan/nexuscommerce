@@ -33,23 +33,49 @@ import { AuthService } from '../../services/auth.service';
               style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
           </div>
 
-          <div style="margin-bottom: 1.25rem;">
+          <div style="margin-bottom: 1.25rem; position: relative;">
             <label style="display: block; color: #cbd5e1; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Password</label>
-            <input 
-              type="password" 
-              formControlName="password"
-              placeholder="••••••••"
-              style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
+            <div style="position: relative;">
+              <input 
+                [type]="showPassword() ? 'text' : 'password'" 
+                formControlName="password"
+                placeholder="••••••••"
+                style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 42px 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
+              
+              <button 
+                type="button" 
+                (click)="showPassword.set(!showPassword())" 
+                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px; display: flex; align-items: center;">
+                @if (showPassword()) {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                } @else {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                }
+              </button>
+            </div>
             <span style="font-size: 0.68rem; color: #64748b; margin-top: 4px; display: block;">Must contain at least 6 characters with mixed letters and numbers.</span>
           </div>
 
-          <div style="margin-bottom: 1.5rem;">
+          <div style="margin-bottom: 1.5rem; position: relative;">
             <label style="display: block; color: #cbd5e1; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Confirm Password</label>
-            <input 
-              type="password" 
-              formControlName="confirmPassword"
-              placeholder="••••••••"
-              style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
+            <div style="position: relative;">
+              <input 
+                [type]="showConfirmPassword() ? 'text' : 'password'" 
+                formControlName="confirmPassword"
+                placeholder="••••••••"
+                style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 42px 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
+              
+              <button 
+                type="button" 
+                (click)="showConfirmPassword.set(!showConfirmPassword())" 
+                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px; display: flex; align-items: center;">
+                @if (showConfirmPassword()) {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                } @else {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                }
+              </button>
+            </div>
           </div>
 
           <button 
@@ -74,6 +100,8 @@ export class SignupComponent {
 
   public loadingSignal = signal<boolean>(false);
   public errorMessage = signal<string>('');
+  public showPassword = signal<boolean>(false);
+  public showConfirmPassword = signal<boolean>(false);
 
   public signupForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
