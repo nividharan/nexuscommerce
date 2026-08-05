@@ -12,9 +12,16 @@ import { AuthService } from '../../services/auth.service';
     <div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
       <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
         
-        <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="text-align: center; margin-bottom: 1.75rem;">
           <h2 style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Operator Login</h2>
-          <p style="color: #94a3b8; font-size: 0.85rem;">Sign in to access your Angular B2B catalog workspace.</p>
+          <p style="color: #94a3b8; font-size: 0.85rem;">Sign in to access your B2B catalog workspace.</p>
+        </div>
+
+        <!-- Quick Demo Credentials Banner -->
+        <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 1.25rem;">
+          <div style="font-weight: 700; color: #38bdf8; margin-bottom: 2px;">🔑 Official Admin Credentials:</div>
+          <div>Email: <code style="color: #34d399;">admin&#64;nexuscommerce.com</code></div>
+          <div>Password: <code style="color: #34d399;">Password123</code></div>
         </div>
 
         @if (errorMessage()) {
@@ -29,7 +36,7 @@ import { AuthService } from '../../services/auth.service';
             <input 
               type="email" 
               formControlName="email"
-              placeholder="operator@nexuscommerce.net"
+              placeholder="admin@nexuscommerce.com"
               style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;">
           </div>
 
@@ -66,8 +73,8 @@ export class LoginComponent {
   public errorMessage = signal<string>('');
 
   public loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    email: ['admin@nexuscommerce.com', [Validators.required, Validators.email]],
+    password: ['Password123', [Validators.required, Validators.minLength(6)]]
   });
 
   public onSubmit(): void {

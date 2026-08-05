@@ -66,6 +66,16 @@ const seedDatabase = async () => {
             );
         }
         console.log("[Server] Catalog synchronization complete (8 items active).");
+
+        // Seed primary admin operator user if not existing
+        const adminExists = await User.findOne({ email: "admin@nexuscommerce.com" });
+        if (!adminExists) {
+            await User.create({
+                email: "admin@nexuscommerce.com",
+                password: "Password123"
+            });
+            console.log("[Server] Primary admin user seeded: admin@nexuscommerce.com");
+        }
     } catch (err) {
         console.error(`[Server] Seeding/Sync failed: ${err.message}`);
     }
