@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
       <!-- Hero Banner -->
       <div style="text-align: center; margin-bottom: 3rem;">
         <span style="font-size: 0.75rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); display: inline-block; margin-bottom: 0.75rem;">
-          Angular 18 Enterprise Client
+          ✨ Automated B2B Catalog Platform
         </span>
         <h1 style="font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem;">
           B2B Product Catalog <span style="background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Automation</span>

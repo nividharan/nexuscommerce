@@ -17,13 +17,13 @@ import { CartService } from '../../services/cart.service';
         </div>
         <div>
           <div style="font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.5px;">NexusCommerce</div>
-          <div style="font-size: 0.65rem; color: #38bdf8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Angular Pipeline</div>
+          <div style="font-size: 0.65rem; color: #38bdf8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Catalog Automation</div>
         </div>
       </a>
 
       <!-- Navigation Links -->
       <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="color: var(--text-secondary, #94a3b8); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s;">Marketplace</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="color: #cbd5e1; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s;">Marketplace Catalog</a>
         
         <!-- User Session Controls -->
         @if (authService.userSignal()) {
