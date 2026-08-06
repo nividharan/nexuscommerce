@@ -65,11 +65,11 @@ import { CommonModule } from '@angular/common';
             <div style="width: 28px; height: 28px; background: rgba(56, 189, 248, 0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(56, 189, 248, 0.3);">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L17L22 12"/></svg>
             </div>
-            <span style="font-weight: 800; color: #fff; font-size: 1rem;">NexusCommerce SaaS</span>
+            <span style="font-weight: 800; color: #fff; font-size: 1rem;">Nivexa SaaS</span>
           </div>
 
           <p style="font-size: 0.82rem; line-height: 1.6; color: #64748b; margin-bottom: 1.25rem;">
-            Enterprise B2B catalog automation platform. Transform supplier notes into live Shopify product catalogs with AI profit profiling.
+            Enterprise B2B catalog automation platform. Transform supplier notes into live Shopify product catalogs with Nivexa AI profit profiling.
           </p>
 
           <!-- Live Status Indicator -->
@@ -114,7 +114,7 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.5rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: #475569;">
-        <div>© 2026 NexusCommerce Inc. All rights reserved. Enterprise B2B SaaS Edition.</div>
+        <div>© 2026 Nivexa Inc. All rights reserved. Enterprise B2B SaaS Edition.</div>
         <div>Built with Angular 18 & Node.js</div>
       </div>
     </footer>

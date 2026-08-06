@@ -19,7 +19,7 @@ import { ProductService, Product } from '../../services/product.service';
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
         </div>
         <div>
-          <div style="font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.5px;">NexusCommerce</div>
+          <div style="font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.5px;">Nivexa</div>
           <div style="font-size: 0.65rem; color: #38bdf8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Catalog Automation</div>
         </div>
       </a>

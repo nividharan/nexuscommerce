@@ -31,7 +31,7 @@ export interface ChatMessage {
           <div style="display: flex; align-items: center; gap: 10px;">
             <div style="width: 10px; height: 10px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399;"></div>
             <div>
-              <div style="font-weight: 800; color: #fff; font-size: 0.9rem;">Nexus AI Concierge</div>
+              <div style="font-weight: 800; color: #fff; font-size: 0.9rem;">Nivexa AI Concierge</div>
               <div style="font-size: 0.7rem; color: #34d399;">Live Support • 24/7</div>
             </div>
           </div>
@@ -73,7 +73,7 @@ export class SupportWidgetComponent {
   public messages = signal<ChatMessage[]>([
     {
       sender: 'bot',
-      text: '👋 Hello! I am the NexusCommerce Assistant. How can I help with your store automation today?',
+      text: '👋 Hello! I am the Nivexa AI Assistant. How can I help with your store catalog automation today?',
       time: 'Now'
     }
   ]);
